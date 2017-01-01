@@ -6,4 +6,22 @@
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   %body
+    .navbar
+      .navbar-item
+        .navbar-item
+          = link_to "FIFA Stat Tracker", root_path
+      - if current_user
+        .navbar-item-right
+          .navbar-item
+            = link_to "+ Submit New Game", new_game_path
+        .navbar-item
+          = link_to "All Games", games_path
+      - else
+        .navbar-item-right
+          .navbar-item
+            = link_to "Sign up", new_user_registration_path, :class => "active"
+        .navbar-item-right
+          .navbar-item
+            = link_to "Log in", new_user_session_path, :class => "active"
+
     = yield
