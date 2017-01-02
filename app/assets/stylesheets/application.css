@@ -45,6 +45,8 @@
      text-align: center;
      padding: 14px 16px;
      text-decoration: none;
+     border-width: : 12px;
+
  }
 
  .navbar-item-right a {
@@ -76,6 +78,75 @@
      background-color: #111;
  }
 
+ .navbar-dropdown {
+   display: inline-block;
+ }
+
+ .navbar-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+ }
+
+ .navbar-dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.navbar-dropdown-content a:hover {background-color: #f1f1f1}
+
+.navbar-dropdown:hover .navbar-dropdown-content {
+    display: block;
+}
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 20px solid #f00;
+}
+
+.submitgame {
+  border-right: 2px;
+  border-color: white;
+}
+
  .active {
     background-color: #4CAF50;
+}
+
+.title {
+  font-size: 6rem;
+  text-align: center;
+  margin-top: 15%;
+}
+
+.subtitle {
+  font-size: 3rem;
+  text-align: center;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
 }

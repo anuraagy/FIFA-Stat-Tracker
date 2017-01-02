@@ -18,6 +18,9 @@ gem 'config'
 gem 'devise'
 gem 'haml'
 gem 'haml-rails'
+gem 'jquery-tablesorter'
+gem 'jquery-turbolinks'
+
 
 group :development, :test do
   gem 'byebug', platform: :mri

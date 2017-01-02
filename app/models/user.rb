@@ -5,14 +5,23 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   def games
-    Game.where(:home_user => self.email) + Game.where(:away_user => self.email)
+    Game.where(:home_user => self.name) + Game.where(:away_user => self.name)
   end
 
   def games_won
-    games.where(:winner => self.email)
+    Game.where(:winner => self.name)
   end
 
   def games_lost
     games - games_won
+  end
+
+  def self.name_list
+    array = []
+    User.all.each do |user|
+      array.push(user.name)
+    end
+
+    array
   end
 end

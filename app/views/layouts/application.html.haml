@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    %title Fifa
+    %title FIFA Statistics Tracker
     = csrf_meta_tags
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
@@ -12,10 +12,18 @@
           = link_to "FIFA Stat Tracker", root_path
       - if current_user
         .navbar-item-right
-          .navbar-item
-            = link_to "+ Submit New Game", new_game_path
+          .navbar-dropdown
+            = link_to "#{current_user.name}", "#", :class => "active"
+            .navbar-dropdown-content
+              = link_to "Edit Account", edit_user_registration_path
+              = link_to "Log out", destroy_user_session_path, :method => :delete
+        .navbar-item-right
+          .navbar-item.submitgame
+            = link_to "+ Submit New Game", new_game_path, :class => ""
         .navbar-item
-          = link_to "All Games", games_path
+          = link_to "Games", games_path
+        .navbar-item
+          = link_to "Table", table_path
       - else
         .navbar-item-right
           .navbar-item
@@ -23,5 +31,6 @@
         .navbar-item-right
           .navbar-item
             = link_to "Log in", new_user_session_path, :class => "active"
-
+    %p.notice= notice
+    %p.alert= alert
     = yield

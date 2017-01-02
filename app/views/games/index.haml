@@ -12,6 +12,7 @@
         %th Away Score
         %th Home Penalties
         %th Away Penalties
+        %th View
     %tbody
       - @games.each do |game|
         %tr
@@ -37,3 +38,5 @@
               = game.away_penalty_score
             - else
               N/A
+          %td
+            = link_to "View", game
