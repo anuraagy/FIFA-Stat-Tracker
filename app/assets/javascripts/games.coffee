@@ -18,6 +18,7 @@ class Games
       @winner_select.append("<option value>Select player</option>")
       @winner_select.append("<option value = '" + @home_select.val() + "'>" + @home_select.val() + "</option>")
       @winner_select.append("<option value = '" + @away_select.val() + "'>" + @away_select.val() + "</option>")
+  
 
 $ ->
   new Games($("body"))
