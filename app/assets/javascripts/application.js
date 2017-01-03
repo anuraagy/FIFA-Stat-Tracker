@@ -12,10 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
-//= require jquery.turbolinks
-//= require_tree .
 //= require jquery-tablesorter
+//= require jquery.turbolinks
+//= require highcharts
+//= require chartkick
+//= require_tree .
 
 $(function(){
   $("#table").tablesorter();

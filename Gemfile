@@ -20,6 +20,7 @@ gem 'haml'
 gem 'haml-rails'
 gem 'jquery-tablesorter'
 gem 'jquery-turbolinks'
+gem "chartkick"
 
 
 group :development, :test do

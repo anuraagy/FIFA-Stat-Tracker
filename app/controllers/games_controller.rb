@@ -3,6 +3,10 @@ class GamesController < ApplicationController
 
   end
 
+  def visualizations
+    
+  end
+
   def index
     @games = Game.order('id ASC')
   end
@@ -56,7 +60,7 @@ class GamesController < ApplicationController
   private
 
   def game_params
-    params[:game].permit(:home_user, :away_user, :home_score, :away_score, :winner)
+    params[:game].permit(:home_user, :away_user, :home_score, :away_score, :winner, :home_penalty_score, :away_penalty_score)
   end
 
 end
