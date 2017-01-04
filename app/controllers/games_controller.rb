@@ -8,11 +8,18 @@ class GamesController < ApplicationController
   end
 
   def review
-    
+    @games = current_user.review_needed
+  end
+
+  def approve
+    @game = Game.find(params[:game])
+    @game.reviewed = true
+    @game.save
+    redirect_to games_path
   end
 
   def index
-    @games = Game.order('id ASC')
+    @games = Game.where(:reviewed => true).order('id ASC')
   end
 
   def table
@@ -29,6 +36,13 @@ class GamesController < ApplicationController
 
   def create
     @game = Game.new(game_params)
+    @game.submitter = current_user.name
+
+    if current_user.name == @game.home_user
+      @game.reviewer = @game.away_user
+    else
+      @game.reviewer = @game.home_user
+    end
 
     if @game.save
       @home_user = User.find_by(:name => @game.home_user)

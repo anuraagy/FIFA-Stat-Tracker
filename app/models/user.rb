@@ -17,7 +17,7 @@ class User < ApplicationRecord
   end
 
   def review_needed
-    Game.where(:reviewed => false)
+    Game.where({:reviewed => false, :reviewer => self.name})
   end
 
   def self.name_list

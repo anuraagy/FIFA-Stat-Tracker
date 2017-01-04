@@ -1,0 +1,43 @@
+.container
+  %h1
+    Review Games
+  %table
+    %thead
+      %tr
+        %th id
+        %th Winner
+        %th Home Player
+        %th Away Player
+        %th Home Score
+        %th Away Score
+        %th Home Penalties
+        %th Away Penalties
+        %th Approve
+    %tbody
+      - unless @games.nil?
+        - @games.each do |game|
+          %tr
+            %td
+              = game.id
+            %td
+              = game.winner
+            %td
+              = game.home_user
+            %td
+              = game.away_user
+            %td
+              = game.home_score
+            %td
+              = game.away_score
+            %td
+              - if game.home_penalty_score?
+                = game.home_penalty_score
+              - else
+                N/A
+            %td
+              - if game.away_penalty_score?
+                = game.away_penalty_score
+              - else
+                N/A
+            %td
+              = link_to "Approve", approve_path(:game => game.id)
