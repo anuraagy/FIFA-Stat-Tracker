@@ -16,6 +16,10 @@ class User < ApplicationRecord
     games - games_won
   end
 
+  def review_needed
+    Game.where(:reviewed => false)
+  end
+
   def self.name_list
     array = []
     User.all.each do |user|

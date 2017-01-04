@@ -4,4 +4,5 @@ Rails.application.routes.draw do
 
   resources :games, :except => [:edit, :update]
   get "/table" => "games#table"
+  get "/review" => "games#review"
 end

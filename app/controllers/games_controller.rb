@@ -4,6 +4,10 @@ class GamesController < ApplicationController
   end
 
   def visualizations
+
+  end
+
+  def review
     
   end
 
