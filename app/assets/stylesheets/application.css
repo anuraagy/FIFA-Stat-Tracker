@@ -154,3 +154,19 @@
 .emphasize {
   color: #4CAF50 !important;
 }
+
+.alert {
+    padding: 20px;
+    background-color: #f44336; /* Red */
+    color: white;
+    margin-bottom: 15px;
+    margin-top: -20px;
+}
+
+.notice {
+    padding: 20px;
+    background-color: #2196F3; /* Red */
+    color: white;
+    margin-bottom: 15px;
+    margin-top: -20px;
+}
