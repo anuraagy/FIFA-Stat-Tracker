@@ -37,7 +37,8 @@
         .navbar-item-right
           .navbar-item
             = link_to "Log in", new_user_session_path, :class => "active"
-    .container
+    - if notice
       %p.notice= notice
+    - if alert
       %p.alert= alert
     = yield
