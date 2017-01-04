@@ -150,3 +150,7 @@
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
+.emphasize {
+  color: #4CAF50 !important;
+}

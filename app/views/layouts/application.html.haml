@@ -25,7 +25,10 @@
         .navbar-item
           = link_to "Table", table_path
         .navbar-item
-          = link_to "Review (#{current_user.review_needed.count})", review_path
+          - if current_user.review_needed.count > 0
+            = link_to "Review (#{current_user.review_needed.count})", review_path, :class => "emphasize"
+          - else
+            = link_to "Review", review_path
 
       - else
         .navbar-item-right
