@@ -7,6 +7,7 @@ class Games
     @away_score       = @element.find("#game_away_score")
     @h_penalty_score  = @element.find("#game_home_penalty_score")
     @a_penalty_score  = @element.find("#game_away_penalty_score")
+    @form             = @element.find("#new_game")
 
     @home_select.on      "change", @populateWinner
     @away_select.on      "change", @populateWinner
@@ -14,6 +15,13 @@ class Games
     @away_score.on       "change", @populateWinner
     @h_penalty_score.on  "change", @populateWinner
     @a_penalty_score.on  "change", @populateWinner
+    @form.submit ->
+      @validateInput
+
+  validateInput: =>
+    if @home_select.val() == @away_select.val()
+      e.preventDefault();
+      alert("Please make sure that you choose two different players when submitting a game")
 
   populateWinner: =>
     if @home_score.val() == @away_score.val()
