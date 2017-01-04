@@ -16,24 +16,25 @@
         %th Goal Differential
     %tbody
       - @users.each do |user|
+        - stats = user.stats
         %tr
           %td
             = user.name
           %td
-            = user.win_count
+            = stats[:games_won]
           %td
-            = user.loss_count
+            = stats[:games_lost]
           %td
-            = user.points
+            = stats[:points]
           %td
-            = ((user.points + 0.0) / (user.win_count + user.loss_count)).to_s[0..3]
+            = ((stats[:points] + 0.0) / (stats[:games])).to_s[0..3]
           %td
-            = user.goals_for
+            = stats[:goals_for]
           %td
-            = user.goals_against
+            = stats[:goals_against]
           %td
-            = ((user.goals_for + 0.0) / (user.win_count + user.loss_count)).to_s[0..3]
+            = ((stats[:goals_for] + 0.0) / (stats[:games])).to_s[0..3]
           %td
-            = ((user.goals_against + 0.0) / (user.win_count + user.loss_count)).to_s[0..3]
+            = ((stats[:goals_against] + 0.0) / (stats[:games])).to_s[0..3]
           %td
-            = user.goals_for - user.goals_against
+            = stats[:goals_for] - stats[:goals_against]

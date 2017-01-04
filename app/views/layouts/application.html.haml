@@ -25,7 +25,8 @@
         .navbar-item
           = link_to "Table", table_path
         .navbar-item
-          = link_to "Review", review_path
+          = link_to "Review (#{current_user.review_needed.count})", review_path
+
       - else
         .navbar-item-right
           .navbar-item
@@ -33,6 +34,7 @@
         .navbar-item-right
           .navbar-item
             = link_to "Log in", new_user_session_path, :class => "active"
-    %p.notice= notice
-    %p.alert= alert
+    .container
+      %p.notice= notice
+      %p.alert= alert
     = yield
