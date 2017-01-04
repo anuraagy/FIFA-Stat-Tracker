@@ -8,7 +8,8 @@ class User < ApplicationRecord
     stats = { :games_won   => games_won.count,
               :games_lost  => games_lost.count,
               :games       => games.count,
-              :points      => games_won.count * 3 }
+              :points      => games_won.count * 3 + games_tied.count * 1,
+              :ties        => games_tied.count}
 
     goals_for = 0
     goals_against = 0
@@ -35,8 +36,12 @@ class User < ApplicationRecord
     Game.where(:winner => self.name, :reviewed => true)
   end
 
+  def games_tied
+    Game.where(:home_user => "", :reviewed => true, :winner => "Tie") + Game.where(:away_user => self.name, :reviewed => true, :winner => "Tie")
+  end
+
   def games_lost
-    games - games_won
+    games - games_tied - games_won
   end
 
   def review_needed

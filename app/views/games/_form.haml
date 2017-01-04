@@ -29,12 +29,12 @@
     .dropdown
       = f.number_field :away_score, :value => 0, :min => 0, :max => 14
   .field
-    = f.label :away_penalty_score
-    .dropdown
-      = f.number_field :away_penalty_score, :value => 0, :min => 0, :max => 14
-  .field
     = f.label :home_penalty_score
     .dropdown
       = f.number_field :home_penalty_score, :value => 0, :min => 0, :max => 14
+  .field
+    = f.label :away_penalty_score
+    .dropdown
+      = f.number_field :away_penalty_score, :value => 0, :min => 0, :max => 14
   .field
     = f.submit
