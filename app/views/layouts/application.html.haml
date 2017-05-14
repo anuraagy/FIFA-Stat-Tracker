@@ -5,6 +5,7 @@
     = csrf_meta_tags
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
   %body
     .navbar
       .navbar-item
@@ -29,7 +30,6 @@
             = link_to "Review (#{current_user.review_needed.count})", review_path, :class => "emphasize"
           - else
             = link_to "Review", review_path
-
       - else
         .navbar-item-right
           .navbar-item
