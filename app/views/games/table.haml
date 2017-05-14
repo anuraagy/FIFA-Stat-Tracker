@@ -1,43 +1,44 @@
 .container
   %h1
     Points Table
-  %table#table
-    %thead
-      %tr
-        %th Name
-        %th Wins
-        %th Losses
-        %th Ties
-        %th Points
-        %th Points/Game
-        %th Goals For
-        %th Goals Against
-        %th Goals For/Game
-        %th Goals Against/Game
-        %th Goal Differential
-    %tbody
-      - @users.each do |user|
-        - stats = user.stats
+  .table
+    %table#table
+      %thead
         %tr
-          %td
-            = user.name
-          %td
-            = stats[:games_won]
-          %td
-            = stats[:games_lost]
-          %td
-            = stats[:ties]
-          %td
-            = stats[:points]
-          %td
-            = ((stats[:points] + 0.0) / (stats[:games])).to_s[0..3]
-          %td
-            = stats[:goals_for]
-          %td
-            = stats[:goals_against]
-          %td
-            = ((stats[:goals_for] + 0.0) / (stats[:games])).to_s[0..3]
-          %td
-            = ((stats[:goals_against] + 0.0) / (stats[:games])).to_s[0..3]
-          %td
-            = stats[:goals_for] - stats[:goals_against]
+          %th Name
+          %th Wins
+          %th Losses
+          %th Ties
+          %th Points
+          %th Points/Game
+          %th Goals For
+          %th Goals Against
+          %th Goals For/Game
+          %th Goals Against/Game
+          %th Goal Differential
+      %tbody
+        - @users.each do |user|
+          - stats = user.stats
+          %tr
+            %td
+              = user.name
+            %td
+              = stats[:games_won]
+            %td
+              = stats[:games_lost]
+            %td
+              = stats[:ties]
+            %td
+              = stats[:points]
+            %td
+              = ((stats[:points] + 0.0) / (stats[:games])).to_s[0..3]
+            %td
+              = stats[:goals_for]
+            %td
+              = stats[:goals_against]
+            %td
+              = ((stats[:goals_for] + 0.0) / (stats[:games])).to_s[0..3]
+            %td
+              = ((stats[:goals_against] + 0.0) / (stats[:games])).to_s[0..3]
+            %td
+              = stats[:goals_for] - stats[:goals_against]

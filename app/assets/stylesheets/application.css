@@ -170,3 +170,23 @@
     margin-bottom: 15px;
     margin-top: -20px;
 }
+
+.table {
+  overflow-x: auto;
+  /*width: 100%;*/
+}
+
+.table {
+  overflow-x: auto;
+  /*width: 100%;*/
+}
+
+@media screen and (max-width: 600px){
+    .column-33 {
+      flex: auto !important;
+      max-width: none !important;
+    }
+    .column-offset-33 {
+      margin-left: 0 !important;
+    }
+}
