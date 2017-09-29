@@ -6,39 +6,42 @@
       %thead
         %tr
           %th Name
-          %th Wins
-          %th Losses
-          %th Ties
-          %th Points
-          %th Points/Game
-          %th Goals For
-          %th Goals Against
-          %th Goals For/Game
-          %th Goals Against/Game
-          %th Goal Differential
+          %th.t-num W%
+          %th.t-num W
+          %th.t-num L
+          %th.t-num T
+          %th.t-num P
+          %th.t-num P/G
+          %th.t-num GF
+          %th.t-num GA
+          %th.t-num GF/G
+          %th.t-num GA/G
+          %th.t-num GD
       %tbody
         - @users.each do |user|
           - stats = user.stats
           %tr
             %td
               = user.name
-            %td
+            %td.t-num
+              = stats[:games] != 0 ? ((stats[:games_won] + 0.0)/(stats[:games])).to_s[0..3] : 0.0
+            %td.t-num
               = stats[:games_won]
-            %td
+            %td.t-num
               = stats[:games_lost]
-            %td
+            %td.t-num
               = stats[:ties]
-            %td
+            %td.t-num
               = stats[:points]
-            %td
+            %td.t-num
               = stats[:games] != 0 ? ((stats[:points] + 0.0) / (stats[:games])).to_s[0..3] : 0.0 
-            %td
+            %td.t-num
               = stats[:goals_for]
-            %td
+            %td.t-num
               = stats[:goals_against]
-            %td
+            %td.t-num
               = stats[:games] != 0 ? ((stats[:goals_for] + 0.0) / (stats[:games])).to_s[0..3] : 0.0 
-            %td
+            %td.t-num
               = stats[:games] != 0 ? ((stats[:goals_against] + 0.0) / (stats[:games])).to_s[0..3] : 0.0 
-            %td
+            %td.t-num
               = stats[:goals_for] - stats[:goals_against]
