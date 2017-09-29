@@ -16,12 +16,21 @@ class GamesController < ApplicationController
   def approve
     @game = Game.find(params[:game])
     @game.reviewed = true
+    @game.approved = true
+    @game.save
+    redirect_to games_path
+  end
+
+  def decline
+    @game = Game.find(params[:game])
+    @game.reviewed = true
+    @game.approved = false
     @game.save
     redirect_to games_path
   end
 
   def index
-    @games = Game.where(:reviewed => true).order('id ASC')
+    @games = Game.where(:approved => true).order('id ASC')
   end
 
   def table

@@ -6,4 +6,5 @@ Rails.application.routes.draw do
   get "/table" => "games#table"
   get "/review" => "games#review"
   get "/approve" => "games#approve"
+  get "/decline" => "games#decline"
 end

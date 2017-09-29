@@ -14,6 +14,7 @@
           %th Home Penalties
           %th Away Penalties
           %th Approve
+          %th Decline
       %tbody
         - unless @games.nil?
           - @games.each do |game|
@@ -42,3 +43,5 @@
                   N/A
               %td
                 = link_to "Approve", approve_path(:game => game.id)
+              %td
+                = link_to "Decline", decline_path(:game => game.id)
