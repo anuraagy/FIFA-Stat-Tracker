@@ -16,16 +16,6 @@ class Games
         sortField: 'text'
     });
 
-    # @home_score.selectize({
-    # });
-    # @away_score.selectize({
-    # });
-    # @h_penalty_score.selectize({
-    # });
-    # @a_penalty_score.selectize({
-    # });
-
-
     @home_select.on      "change", @populateWinner
     @away_select.on      "change", @populateWinner
     @home_score.on       "change", @populateWinner

@@ -31,14 +31,14 @@
             %td
               = stats[:points]
             %td
-              = ((stats[:points] + 0.0) / (stats[:games])).to_s[0..3]
+              = stats[:games] != 0 ? ((stats[:points] + 0.0) / (stats[:games])).to_s[0..3] : 0.0 
             %td
               = stats[:goals_for]
             %td
               = stats[:goals_against]
             %td
-              = ((stats[:goals_for] + 0.0) / (stats[:games])).to_s[0..3]
+              = stats[:games] != 0 ? ((stats[:goals_for] + 0.0) / (stats[:games])).to_s[0..3] : 0.0 
             %td
-              = ((stats[:goals_against] + 0.0) / (stats[:games])).to_s[0..3]
+              = stats[:games] != 0 ? ((stats[:goals_against] + 0.0) / (stats[:games])).to_s[0..3] : 0.0 
             %td
               = stats[:goals_for] - stats[:goals_against]
