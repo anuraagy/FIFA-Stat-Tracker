@@ -12,6 +12,7 @@
  *
  *= require milligram
  *= require_self
+ *= require games
  */
 
  body  {
