@@ -9,6 +9,23 @@ class Games
     @a_penalty_score  = @element.find("#game_away_penalty_score")
     @form             = @element.find("#new_game")
 
+    @home_select.selectize({
+        sortField: 'text'
+    });
+    @away_select.selectize({
+        sortField: 'text'
+    });
+
+    # @home_score.selectize({
+    # });
+    # @away_score.selectize({
+    # });
+    # @h_penalty_score.selectize({
+    # });
+    # @a_penalty_score.selectize({
+    # });
+
+
     @home_select.on      "change", @populateWinner
     @away_select.on      "change", @populateWinner
     @home_score.on       "change", @populateWinner

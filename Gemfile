@@ -21,6 +21,8 @@ gem 'haml-rails'
 gem 'jquery-tablesorter'
 gem 'jquery-turbolinks'
 gem "chartkick"
+gem "select2-rails"
+gem "selectize-rails"
 
 
 group :development, :test do

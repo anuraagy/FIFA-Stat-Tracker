@@ -16,6 +16,8 @@
 //= require jquery.turbolinks
 //= require highcharts
 //= require chartkick
+//= require select2
+//= require selectize
 //= require_tree .
 
 $(function(){
