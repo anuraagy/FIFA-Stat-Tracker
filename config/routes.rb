@@ -5,10 +5,14 @@ Rails.application.routes.draw do
   resources :games, :except => [:edit, :update]
 
   resources :leagues, :param => :name do 
-  	resources :seasons do
+    get :join, :on => :member
+    
+  	resources :seasons, :param => :season_id do
 
   	end
   end
+
+  get "/myleagues" => "leagues#myleagues"
 
   get "/table" => "games#table"
   get "/review" => "games#review"

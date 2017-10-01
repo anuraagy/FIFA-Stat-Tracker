@@ -14,22 +14,16 @@
       - if current_user
         .navbar-item-right
           .navbar-dropdown
-            = link_to "#{current_user.name}", "#", :class => "active"
+            = link_to "#{current_user.name}", "#", :class => "uname"
             .navbar-dropdown-content
               = link_to "Edit Account", edit_user_registration_path
               = link_to "Log out", destroy_user_session_path, :method => :delete
-        .navbar-item-right
-          .navbar-item.submitgame
-            = link_to "+ Submit New Game", new_game_path, :class => ""
         .navbar-item
-          = link_to "Games", games_path
+          = link_to "My Leagues", myleagues_path
         .navbar-item
-          = link_to "Table", table_path
+          = link_to "Join League", leagues_path
         .navbar-item
-          - if current_user.review_needed.count > 0
-            = link_to "Review (#{current_user.review_needed.count})", review_path, :class => "emphasize"
-          - else
-            = link_to "Review", review_path
+          = link_to "Create League", new_league_path
       - else
         .navbar-item-right
           .navbar-item
@@ -37,6 +31,31 @@
         .navbar-item-right
           .navbar-item
             = link_to "Log in", new_user_session_path, :class => "active"
+
+    - if current_user && params[:name]
+      .navbar{:style => "margin-top: -20px; background-color: #4CAF50"}
+        - if current_user
+          .navbar-item-right
+            .navbar-item.submitgame
+              = link_to "+ Submit New Game", new_game_path, :class => ""
+          .navbar-item
+            = link_to "#{curr_league.name}", curr_league.name
+          .navbar-item
+            = link_to "Games", games_path
+          .navbar-item
+            = link_to "Table", table_path
+          .navbar-item
+            - if current_user.review_needed.count > 0
+              = link_to "Review (#{current_user.review_needed.count})", review_path, :class => "emphasize"
+            - else
+              = link_to "Review", review_path
+        - else
+          .navbar-item-right
+            .navbar-item
+              = link_to "Sign up", new_user_registration_path, :class => "active"
+          .navbar-item-right
+            .navbar-item
+              = link_to "Log in", new_user_session_path, :class => "active"
     - if notice
       %p.notice= notice
     - if alert

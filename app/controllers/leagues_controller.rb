@@ -1,6 +1,17 @@
 class LeaguesController < ApplicationController
+
+  before_action :check_permissions, :only => [:new, :create, :show, :edit, :update, :destroy]
+
   def index
     @leagues = League.all
+  end
+
+  def myleagues
+    @leagues = current_user.leagues
+  end
+
+  def show
+    @league = League.find_by!(:name => params[:name])
   end
 
   def new
@@ -17,12 +28,16 @@ class LeaguesController < ApplicationController
     end
   end
 
+  def join
+    @league = League.find_by!(:name => params[:name])
+  end
+
   def edit
-    @league = League.find(params[:id])
+    @league = League.find_by!(:name => params[:name])
   end
 
   def update
-    @league = League.find(params[:id])
+    @league = League.find_by!(:name => params[:name])
 
     if @league.update(league_params)
       redirect_to @league
@@ -41,5 +56,11 @@ class LeaguesController < ApplicationController
 
   def league_params
     params.require(:league).permit(:name, :display_name, :password, :sport)
+  end
+
+  def check_permissions
+    unless current_user.leagues.include?(@league)
+      redirect_to root_path, :notice => "You are not part of this league"
+    end
   end
 end

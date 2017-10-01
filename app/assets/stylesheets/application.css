@@ -32,6 +32,10 @@
   border: none;
  }
  
+ .uname {
+  background-color: #111;
+ }
+
  .t-num {
   text-align: right;
  }
@@ -91,7 +95,7 @@
  }
 
  .navbar-item-right a:hover {
-     background-color: #111;
+     background-color: #4CAF50;
  }
 
  .navbar-dropdown {

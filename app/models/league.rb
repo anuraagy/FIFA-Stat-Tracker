@@ -10,6 +10,6 @@ class League < ApplicationRecord
 	validates :sport,        :presence => true
 
 	def commissioner 
-		league_members.where(:role => "commissioner").first.user
+		league_members.where(:role => "commissioner").first.try(:user) 
 	end
 end

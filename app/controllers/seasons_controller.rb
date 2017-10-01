@@ -3,6 +3,10 @@ class SeasonsController < ApplicationController
 		@seasons = Season.all
 	end
 
+  def show
+    @season = Season.find_by!(:season_id => params[:season_id])
+  end
+
 	def new
 		@season = Season.new
 	end
@@ -18,11 +22,11 @@ class SeasonsController < ApplicationController
 	end
 
 	def edit
-		@season = Season.find(params[:id])
+		@season = Season.find_by!(:season_id => params[:season_id])
 	end
 
 	def update
-		@season = Season.find(params[:id])
+		@season = Season.find_by!(:season_id => params[:season_id])
 
 		if @season.update(season_params)
 			redirect_to @season
