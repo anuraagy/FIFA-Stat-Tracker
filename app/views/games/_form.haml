@@ -1,40 +1,39 @@
 = form_for @game do |f|
   - if @game.errors.any?
     #error_explanation
-      %h2
-        = pluralize(@game.errors.count, "error")
-        prohibited
-        this article from being saved:
       %ul
         - @game.errors.full_messages.each do |msg|
           %li= msg
-  .field
-    = f.label :winner
-    .dropdown
-      = f.select :winner, options_for_select(""), :include_blank => "Select player"
-  .field
-    = f.label :home_user
-    .dropdown
-      = f.select :home_user, options_for_select(User.name_list,  {:class => "navbar-dropdown-content"}), :include_blank => "Select player"
-  .field
-    = f.label :away_user
-    .dropdown
-      = f.select :away_user, options_for_select(User.name_list,  {:class => "navbar-dropdown-content"}), :include_blank => "Select player"
-  .field
-    = f.label :home_score
-    .dropdown
-      = f.number_field :home_score, :value => 0, :min => 0, :max => 14
-  .field
-    = f.label :away_score
-    .dropdown
-      = f.number_field :away_score, :value => 0, :min => 0, :max => 14
-  .field
-    = f.label :home_penalty_score
-    .dropdown
-      = f.number_field :home_penalty_score, :value => 0, :min => 0, :max => 14
-  .field
-    = f.label :away_penalty_score
-    .dropdown
-      = f.number_field :away_penalty_score, :value => 0, :min => 0, :max => 14
-  .field
-    = f.submit "Submit Game", :id => "submit"
+  .row
+    .field.column
+      = f.label :winner
+      .dropdown
+        = f.select :winner, options_for_select(""), :include_blank => "Select player"
+    .field.column
+      = f.label :home_user
+      .dropdown
+        = f.select :home_user, options_for_select(User.name_list,  {:class => "navbar-dropdown-content"}), :include_blank => "Select player"
+    .field.column
+      = f.label :away_user
+      .dropdown
+        = f.select :away_user, options_for_select(User.name_list,  {:class => "navbar-dropdown-content"}), :include_blank => "Select player"
+  .row
+    .field.column
+      = f.label :home_score
+      .dropdown
+        = f.number_field :home_score, :value => 0, :min => 0, :max => 14
+    .field.column
+      = f.label :away_score
+      .dropdown
+        = f.number_field :away_score, :value => 0, :min => 0, :max => 14
+    .field.column
+      = f.label :home_penalty_score
+      .dropdown
+        = f.number_field :home_penalty_score, :value => 0, :min => 0, :max => 14
+    .field.column
+      = f.label :away_penalty_score
+      .dropdown
+        = f.number_field :away_penalty_score, :value => 0, :min => 0, :max => 14
+  .row
+    .field.column
+      = f.submit "Submit Game", :id => "submit", :class => "pull-right right"

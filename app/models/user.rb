@@ -29,15 +29,15 @@ class User < ApplicationRecord
   end
 
   def games
-    Game.where(:home_user => self.name, :reviewed => true) + Game.where(:away_user => self.name, :reviewed => true)
+    Game.where(:home_user => self.name, :approved => true) + Game.where(:away_user => self.name, :approved => true)
   end
 
   def games_won
-    Game.where(:winner => self.name, :reviewed => true)
+    Game.where(:winner => self.name, :approved => true)
   end
 
   def games_tied
-    Game.where(:home_user => self.name, :reviewed => true, :winner => "Tie") + Game.where(:away_user => self.name, :reviewed => true, :winner => "Tie")
+    Game.where(:home_user => self.name, :approved => true, :winner => "Tie") + Game.where(:away_user => self.name, :approved => true, :winner => "Tie")
   end
 
   def games_lost

@@ -16,10 +16,12 @@
 //= require jquery.turbolinks
 //= require highcharts
 //= require chartkick
+//= require select2
+//= require selectize
 //= require_tree .
 
 $(function(){
-  $("#table").tablesorter({
+  $("table").tablesorter({
     sortList: [[0,0]]
   });
 });

@@ -1,16 +1,15 @@
 .container
   %h1
     = "Game ##{@game.id}"
-  %table
+  %table#table
     %thead
       %tr
         %th Winner
-        %th Home Player
-        %th Away Player
-        %th Home Score
-        %th Away Score
-        %th Home Penalties
-        %th Away Penalties
+        %th Home
+        %th Away
+        %th.t-num Score
+        %th.t-num Penalties
+        %th View
     %tbody
       %tr
         %td
@@ -19,17 +18,12 @@
           = @game.home_user
         %td
           = @game.away_user
-        %td
-          = @game.home_score
-        %td
-          = @game.away_score
-        %td
-          - if @game.home_penalty_score?
-            = @game.home_penalty_score
+        %td.t-num
+          = "#{@game.home_score} - #{@game.away_score}"
+        %td.t-num
+          - if @game.home_penalty_score? && @game.away_penalty_score?
+            = "#{game.home_penalty_score} - #{game.away_penalty_score}"
           - else
-            N/A
+            0 - 0
         %td
-          - if @game.away_penalty_score?
-            = @game.away_penalty_score
-          - else
-            N/A
+          = link_to "View", @game
