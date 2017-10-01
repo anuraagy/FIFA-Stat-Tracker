@@ -3,6 +3,13 @@ Rails.application.routes.draw do
   root "games#default"
 
   resources :games, :except => [:edit, :update]
+
+  resources :leagues, :param => :name do 
+  	resources :seasons do
+
+  	end
+  end
+
   get "/table" => "games#table"
   get "/review" => "games#review"
   get "/approve" => "games#approve"
