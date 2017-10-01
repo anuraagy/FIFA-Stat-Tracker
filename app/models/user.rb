@@ -4,6 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  has_many :league_members
+  has_many :leagues, :through => :league_members
+
   def stats
     stats = { :games_won   => games_won.count,
               :games_lost  => games_lost.count,
@@ -26,6 +29,10 @@ class User < ApplicationRecord
     stats[:goals_for] = goals_for
     stats[:goals_against] = goals_against
     stats
+  end
+
+  def leagues_owned 
+    leagues.where("league_members.role = ?", "commissioner")
   end
 
   def games
