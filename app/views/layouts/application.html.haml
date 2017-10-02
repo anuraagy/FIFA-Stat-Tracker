@@ -18,8 +18,15 @@
             .navbar-dropdown-content
               = link_to "Edit Account", edit_user_registration_path
               = link_to "Log out", destroy_user_session_path, :method => :delete
+        / .navbar-item
+        /   = link_to "My Leagues", myleagues_path
         .navbar-item
-          = link_to "My Leagues", myleagues_path
+          .navbar-dropdown
+            = link_to "My Leagues", myleagues_path
+            .navbar-dropdown-content
+              - current_user.leagues.each do |league|
+                = link_to "#{league.display_name}", league_path(league.name)
+
         .navbar-item
           = link_to "Join League", leagues_path
         .navbar-item
@@ -32,21 +39,24 @@
           .navbar-item
             = link_to "Log in", new_user_session_path, :class => "active"
 
-    - if current_user && params[:name]
+    - if current_user && curr_league && current_user.leagues.include?(curr_league)
       .navbar{:style => "margin-top: -20px; background-color: #4CAF50"}
         - if current_user
           .navbar-item-right
             .navbar-item.submitgame
               = link_to "+ Submit New Game", new_game_path, :class => ""
           .navbar-item
-            = link_to "#{curr_league.name}", curr_league.name
+            = link_to "#{curr_league.name}", league_path(curr_league.name)
+          .navbar-item
+            - if curr_league.commissioner == current_user
+              = link_to "Edit", edit_league_path(curr_league.name)
           .navbar-item
             = link_to "Games", games_path
           .navbar-item
             = link_to "Table", table_path
           .navbar-item
             - if current_user.review_needed.count > 0
-              = link_to "Review (#{current_user.review_needed.count})", review_path, :class => "emphasize"
+              = link_to "Review (#{current_user.review_needed.count})", review_path, :class => ""
             - else
               = link_to "Review", review_path
         - else

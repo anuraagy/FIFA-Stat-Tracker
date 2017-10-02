@@ -5,8 +5,8 @@ Rails.application.routes.draw do
   resources :games, :except => [:edit, :update]
 
   resources :leagues, :param => :name do 
-    get :join, :on => :member
-    
+    get  :join, :on => :member
+    post :add_player, :on => :member
   	resources :seasons, :param => :season_id do
 
   	end

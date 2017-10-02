@@ -12,4 +12,12 @@ class League < ApplicationRecord
 	def commissioner 
 		league_members.where(:role => "commissioner").first.try(:user) 
 	end
+
+	def self.SPORTS
+		%w[FIFA 2K Madden]
+	end
+
+	def to_param
+		name
+	end
 end

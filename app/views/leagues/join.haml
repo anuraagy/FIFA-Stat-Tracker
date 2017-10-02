@@ -1,0 +1,5 @@
+.container
+  = form_tag add_player_league_path(@league.name), :method => :POST do 
+    = label_tag :password
+    = text_field_tag :password, "", :placeholder => "Enter password", :required => true
+    = submit_tag "Join team"

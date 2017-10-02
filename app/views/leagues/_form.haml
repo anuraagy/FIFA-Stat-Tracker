@@ -1,0 +1,22 @@
+= form_for @league do |f|
+  - if @league.errors.any?
+    #error_explanation
+      %ul
+        - @league.errors.full_messages.each do |msg|
+          %li= msg
+  - if @league.name?
+    = f.hidden_field :name, :value => @league.name
+  .field
+    = f.label :display_name
+    .dropdown
+      = f.text_field :display_name, :required => true
+  .field
+    = f.label :sport
+    .dropdown
+      = f.select :sport, League.SPORTS, :required => true
+  .field
+    = f.label :password
+    .dropdown
+      = f.text_field :password, :required => true
+  .field
+    = f.submit "Submit League", :id => "submit"

@@ -22,5 +22,5 @@
             %td
               = league.sport
             %td
-              = current_user.leagues.include?(league) ? (link_to "Join", league_path(league.name)) : (link_to "Go", league_path(league.name))
+              = current_user.leagues.include?(league) ? (link_to "Go", league_path(league.name)) : (link_to "Join", join_league_path(league.name))
 
