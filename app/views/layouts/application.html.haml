@@ -53,13 +53,13 @@
           .navbar-item
             = link_to "Games", league_games_path(curr_league)
           .navbar-item
-            = link_to "Table", table_league_game_path
+            = link_to "Table", table_league_path(curr_league.name)
           .navbar-item
             .navbar-dropdown
               = link_to "Previous Seasons", league_seasons_path(curr_league)
               .navbar-dropdown-content
-                - curr_league.seasons.each do |season|
-                  = link_to "#{league.display_name}", league_season_path(curr_league,season)
+                - curr_league.seasons.each_with_index do |season, index|
+                  = link_to "Season #{index}", league_season_path(curr_league.name, season.season_id)
           .navbar-item
             - if current_user.review_needed.count > 0
               = link_to "Review (#{current_user.review_needed.count})", review_path, :class => ""

@@ -5,9 +5,9 @@ Rails.application.routes.draw do
   resources :leagues, :param => :name do 
     get  :join,       :on => :member
     post :add_player, :on => :member
+    get  :table,      :on => :member, :controller => :games
 
     resources :games, :param => :game_id do 
-      get :table, :on => :collection
     end
 
   	resources :seasons, :param => :season_id do

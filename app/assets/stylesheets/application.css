@@ -29,6 +29,10 @@
     font-size: 11px !important;
  }
 
+ .center {
+  text-align: center;
+ }
+
  td {
   border: none;
  }

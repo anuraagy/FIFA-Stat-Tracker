@@ -6,6 +6,11 @@ class Game < ApplicationRecord
    validates :winner,              :presence => true
    validate  :validate_players
 
+   belongs_to :season
+   
+   def to_param
+      game_id
+   end
 
    def validate_players
      if home_user == away_user

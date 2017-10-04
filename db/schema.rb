@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(version: 20171002210638) do
     t.bigint "league_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "season_id"
+    t.string "season_id"
     t.index ["league_id"], name: "index_seasons_on_league_id"
   end
 

@@ -1,34 +1,37 @@
 .container
-  %h1
-    Games
-  .table
-    %table
-      %thead
-        %tr
-          %th id
-          %th Winner
-          %th Home
-          %th Away
-          %th.t-num Score
-          %th.t-num Penalties
-          %th View
-      %tbody
-        - @games.each do |game|
+  %h1 Games
+  - if @games.count != 0
+    .table
+      %table
+        %thead
           %tr
-            %td
-              = game.id
-            %td
-              = game.winner
-            %td
-              = game.home_user
-            %td
-              = game.away_user
-            %td.t-num
-              = "#{game.home_score} - #{game.away_score}"
-            %td.t-num
-              - if game.home_penalty_score? && game.away_penalty_score?
-                = "#{game.home_penalty_score} - #{game.away_penalty_score}"
-              - else
-                0 - 0
-            %td
-              = link_to "View", game
+            %th id
+            %th Winner
+            %th Home
+            %th Away
+            %th.t-num Score
+            %th.t-num Penalties
+            %th View
+        %tbody
+          - @games.each do |game|
+            %tr
+              %td
+                = game.id
+              %td
+                = game.winner
+              %td
+                = game.home_user
+              %td
+                = game.away_user
+              %td.t-num
+                = "#{game.home_score} - #{game.away_score}"
+              %td.t-num
+                - if game.home_penalty_score? && game.away_penalty_score?
+                  = "#{game.home_penalty_score} - #{game.away_penalty_score}"
+                - else
+                  0 - 0
+              %td
+                = link_to "View", league_season_game_path(curr_league.name, game.season.season_id, game.game_id)
+  - else
+    %h2.center No games have been played yet!
+

@@ -1,5 +1,6 @@
 class LeaguesController < ApplicationController
 
+  before_action :authenticate_user!
   before_action :check_permissions, :only => [:show, :edit, :update, :destroy]
   before_action :check_join, :only => [:join]
   before_action :check_commissioner, :only => [:edit, :update, :destroy]

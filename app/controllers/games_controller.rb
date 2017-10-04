@@ -14,7 +14,7 @@ class GamesController < ApplicationController
   end
 
   def approve
-    @game = Game.find(params[:game])
+    @game = Game.find_by(:game_id => params[:game_id])
     @game.reviewed = true
     @game.approved = true
     @game.save
@@ -22,7 +22,7 @@ class GamesController < ApplicationController
   end
 
   def decline
-    @game = Game.find(params[:game])
+    @game = Game.find_by(:game_id => params[:game_id])
     @game.reviewed = true
     @game.approved = false
     @game.save
@@ -30,15 +30,29 @@ class GamesController < ApplicationController
   end
 
   def index
-    @games = Game.where(:approved => true).order('id ASC')
+    @games = []
+
+    if params[:season_id]
+      @season = Season.find_by!(:season_id => params[:season_id])
+      @games = @season.games.where(:approved => true).order('id ASC')
+    else
+      @league = League.find_by!(:name => params[:league_name])
+      @games = @league.seasons.last.games.where(:approved => true).order('id ASC') unless @league.seasons.count == 0
+    end
   end
 
   def table
+    if params[:season_id]
+      @season = Season.find_by!(:season_id => params[:season_id])
+    else
+      @league = League.find_by!(:name => params[:name])
+      @season = @league.seasons.last
+    end
     @users = User.all
   end
 
   def show
-    @game = Game.find(params[:id])
+    @game = Game.find_by(:game_id => params[:game_id])
   end
 
   def new
@@ -76,7 +90,8 @@ class GamesController < ApplicationController
   private
 
   def game_params
-    params[:game].permit(:home_user, :away_user, :home_score, :away_score, :winner, :home_penalty_score, :away_penalty_score)
+    params[:game][:game_id] = SecureRandom.urlsafe_base64(8)
+    params[:game].permit(:home_user, :away_user, :home_score, :away_score, :winner, :home_penalty_score, :away_penalty_score, :game_id)
   end
 
 end

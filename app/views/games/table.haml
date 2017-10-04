@@ -1,47 +1,50 @@
 .container
   %h1
     Points Table
-  .table
-    %table#table
-      %thead
-        %tr
-          %th Name
-          %th.t-num{:title => "Win percentage"} W%
-          %th.t-num{:title => "Wins"} W
-          %th.t-num{:title => "Losses"} L
-          %th.t-num{:title => "Draws"} D
-          %th.t-num{:title => "Points"} P
-          %th.t-num{:title => "Points per game"} P/G
-          %th.t-num{:title => "Goals for"} GF
-          %th.t-num{:title => "Goals against"} GA
-          %th.t-num{:title => "Goals for per game "} GF/G
-          %th.t-num{:title => "Goals against per game"} GA/G
-          %th.t-num{:title => "Goal differential"} GD
-      %tbody
-        - @users.each do |user|
-          - stats = user.stats
+  - if @season
+    .table
+      %table#table
+        %thead
           %tr
-            %td
-              = user.name
-            %td.t-num
-              = stats[:games] != 0 ? ((stats[:games_won] + 0.0)/(stats[:games])).to_s[0..3] : 0.0
-            %td.t-num
-              = stats[:games_won]
-            %td.t-num
-              = stats[:games_lost]
-            %td.t-num
-              = stats[:ties]
-            %td.t-num
-              = stats[:points]
-            %td.t-num
-              = stats[:games] != 0 ? ((stats[:points] + 0.0) / (stats[:games])).to_s[0..3] : 0.0 
-            %td.t-num
-              = stats[:goals_for]
-            %td.t-num
-              = stats[:goals_against]
-            %td.t-num
-              = stats[:games] != 0 ? ((stats[:goals_for] + 0.0) / (stats[:games])).to_s[0..3] : 0.0 
-            %td.t-num
-              = stats[:games] != 0 ? ((stats[:goals_against] + 0.0) / (stats[:games])).to_s[0..3] : 0.0 
-            %td.t-num
-              = stats[:goals_for] - stats[:goals_against]
+            %th Name
+            %th.t-num{:title => "Win percentage"} W%
+            %th.t-num{:title => "Wins"} W
+            %th.t-num{:title => "Losses"} L
+            %th.t-num{:title => "Draws"} D
+            %th.t-num{:title => "Points"} P
+            %th.t-num{:title => "Points per game"} P/G
+            %th.t-num{:title => "Goals for"} GF
+            %th.t-num{:title => "Goals against"} GA
+            %th.t-num{:title => "Goals for per game "} GF/G
+            %th.t-num{:title => "Goals against per game"} GA/G
+            %th.t-num{:title => "Goal differential"} GD
+        %tbody
+          - @users.each do |user|
+            - stats = user.stats(@season)
+            %tr
+              %td
+                = user.name
+              %td.t-num
+                = stats[:games] != 0 ? ((stats[:games_won] + 0.0)/(stats[:games])).to_s[0..3] : 0.0
+              %td.t-num
+                = stats[:games_won]
+              %td.t-num
+                = stats[:games_lost]
+              %td.t-num
+                = stats[:ties]
+              %td.t-num
+                = stats[:points]
+              %td.t-num
+                = stats[:games] != 0 ? ((stats[:points] + 0.0) / (stats[:games])).to_s[0..3] : 0.0 
+              %td.t-num
+                = stats[:goals_for]
+              %td.t-num
+                = stats[:goals_against]
+              %td.t-num
+                = stats[:games] != 0 ? ((stats[:goals_for] + 0.0) / (stats[:games])).to_s[0..3] : 0.0 
+              %td.t-num
+                = stats[:games] != 0 ? ((stats[:goals_against] + 0.0) / (stats[:games])).to_s[0..3] : 0.0 
+              %td.t-num
+                = stats[:goals_for] - stats[:goals_against]
+  - else
+    %h2.center It looks like your season hasn't started yet!
