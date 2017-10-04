@@ -9,4 +9,13 @@ class Season < ApplicationRecord
 	def to_param
 		season_id
 	end
+
+	def player_names
+    players = []
+    league.players.each do |player|
+      players.push(player.name)
+    end
+
+    players
+  end
 end

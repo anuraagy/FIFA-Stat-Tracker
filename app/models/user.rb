@@ -11,13 +11,13 @@ class User < ApplicationRecord
 
     stats = { :games_won   => games_won(season).count,
               :games_lost  => games_lost(season).count,
-              :games       => season.games.count,
+              :games       => games(season).count,
               :points      => games_won(season).count * 3 + games_tied(season).count * 1,
               :ties        => games_tied(season).count}
 
     goals_for = 0
     goals_against = 0
-    season.games.each do |game|
+    games(season).each do |game|
       if game.home_user == self.name
         goals_for += game.home_score
         goals_against += game.away_score
@@ -41,15 +41,15 @@ class User < ApplicationRecord
   end
 
   def games_won(season)
-    season.games.where(:winner => self.name, :approved => true)
+     season.games.where(:winner => self.name, :approved => true)
   end
 
   def games_tied(season)
-    season.games.where(:home_user => self.name, :approved => true, :winner => "Tie") + season.games.where(:away_user => self.name, :approved => true, :winner => "Tie")
+    season.games.where(:home_user => self.name, :approved => true, :winner => "Tie") +  season.games.where(:away_user => self.name, :approved => true, :winner => "Tie")
   end
 
   def games_lost(season)
-    season.games - games_tied(season) - games_won(season)
+     games(season) - games_tied(season) - games_won(season)
   end
 
   def review_needed

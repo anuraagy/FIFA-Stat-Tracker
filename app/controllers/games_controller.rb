@@ -1,6 +1,8 @@
 class GamesController < ApplicationController
   before_action :authenticate_user!, :except => [:default]
-
+  before_action :find_league, :except => [:default, :review, :approve]
+  before_action :find_season, :except => [:default, :review, :approve]
+  before_action :check_approver, :only => [:approve, :decline]
   def default
 
   end
@@ -18,7 +20,7 @@ class GamesController < ApplicationController
     @game.reviewed = true
     @game.approved = true
     @game.save
-    redirect_to games_path
+    redirect_to review_path
   end
 
   def decline
@@ -26,7 +28,7 @@ class GamesController < ApplicationController
     @game.reviewed = true
     @game.approved = false
     @game.save
-    redirect_to games_path
+    redirect_to review_path
   end
 
   def index
@@ -74,7 +76,7 @@ class GamesController < ApplicationController
       render :new
     else
       if @game.save
-        redirect_to @game
+        redirect_to league_season_game_path(@league.name, @game.season_id, @game.game_id)
       else
         render :new
       end
@@ -90,8 +92,32 @@ class GamesController < ApplicationController
   private
 
   def game_params
-    params[:game][:game_id] = SecureRandom.urlsafe_base64(8)
-    params[:game].permit(:home_user, :away_user, :home_score, :away_score, :winner, :home_penalty_score, :away_penalty_score, :game_id)
+    params[:game][:game_id] = SecureRandom.urlsafe_base64(8) if params[:game][:game_id] == ","
+    params[:game].permit(:home_user, :away_user, :home_score, :away_score, :winner, :home_penalty_score, :away_penalty_score, :game_id, :season_id)
   end
 
+
+  def find_league
+    if params[:name]
+      @league = League.find_by(:name => params[:name])
+    elsif params[:league_name]
+      @league = League.find_by(:name => params[:league_name])
+    end
+  end
+
+  def find_season
+    if params[:season_id]
+      @season = Season.find_by!(:season_id => params[:season_id])
+    else
+      @season = @league.seasons.last unless @league.seasons.count == 0
+    end
+  end
+
+  def check_approver
+    @game = Game.find_by(:game_id => params[:game_id])
+
+    if @game.reviewer != current_user.name
+      redirect_to root_path, :notice => "What do you think you're doing?"
+    end
+  end
 end

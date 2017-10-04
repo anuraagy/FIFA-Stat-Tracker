@@ -31,6 +31,11 @@
           = link_to "Join League", leagues_path
         .navbar-item
           = link_to "Create League", new_league_path
+        .navbar-item
+          - if current_user.review_needed.count > 0
+            = link_to "Review (#{current_user.review_needed.count})", review_path, :class => "emphasize"
+          - else
+            = link_to "Review", review_path
       - else
         .navbar-item-right
           .navbar-item
@@ -46,7 +51,7 @@
             .navbar-item.submitgame
               = link_to "+ Submit New Game", new_league_game_path(curr_league), :class => ""
           .navbar-item
-            = link_to "#{curr_league.name}", league_path(curr_league.name)
+            = link_to "#{curr_league.display_name}", league_path(curr_league.name)
           .navbar-item
             - if curr_league.commissioner == current_user
               = link_to "Edit", edit_league_path(curr_league.name)
@@ -59,12 +64,7 @@
               = link_to "Previous Seasons", league_seasons_path(curr_league)
               .navbar-dropdown-content
                 - curr_league.seasons.each_with_index do |season, index|
-                  = link_to "Season #{index}", league_season_path(curr_league.name, season.season_id)
-          .navbar-item
-            - if current_user.review_needed.count > 0
-              = link_to "Review (#{current_user.review_needed.count})", review_path, :class => ""
-            - else
-              = link_to "Review", review_path
+                  = link_to "Season #{index+1}", league_season_path(curr_league.name, season.season_id)
         - else
           .navbar-item-right
             .navbar-item
