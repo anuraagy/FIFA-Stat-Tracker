@@ -1,8 +1,10 @@
 class GamesController < ApplicationController
   before_action :authenticate_user!, :except => [:default]
-  before_action :find_league, :except => [:default, :review, :approve]
-  before_action :find_season, :except => [:default, :review, :approve]
+  before_action :find_league, :except => [:default, :review, :approve, :decline]
+  before_action :find_season, :except => [:default, :review, :approve, :decline]
   before_action :check_approver, :only => [:approve, :decline]
+  before_action :check_commissioner, :only => [:edit, :update]
+
   def default
 
   end
@@ -20,7 +22,7 @@ class GamesController < ApplicationController
     @game.reviewed = true
     @game.approved = true
     @game.save
-    redirect_to review_path
+    redirect_to review_path, :notice => "The game has been approved"
   end
 
   def decline
@@ -28,7 +30,7 @@ class GamesController < ApplicationController
     @game.reviewed = true
     @game.approved = false
     @game.save
-    redirect_to review_path
+    redirect_to review_path, :notice => "The game has been declined"
   end
 
   def index
@@ -59,6 +61,20 @@ class GamesController < ApplicationController
 
   def new
     @game = Game.new
+  end
+
+  def edit
+    @game = Game.find_by(:game_id => params[:game_id])
+  end
+
+  def update
+    @game = Game.find_by(:game_id => params[:game_id])
+
+    if @game.update(game_params)
+      redirect_to league_season_game_path(@league.name, @game.season_id, @game.game_id), :notice => "Game updated"
+    else
+      render :edit
+    end
   end
 
   def create
@@ -92,7 +108,7 @@ class GamesController < ApplicationController
   private
 
   def game_params
-    params[:game][:game_id] = SecureRandom.urlsafe_base64(8) if params[:game][:game_id] == ","
+    params[:game][:game_id] = SecureRandom.urlsafe_base64(8) if params[:game][:game_id] == ""
     params[:game].permit(:home_user, :away_user, :home_score, :away_score, :winner, :home_penalty_score, :away_penalty_score, :game_id, :season_id)
   end
 
@@ -118,6 +134,12 @@ class GamesController < ApplicationController
 
     if @game.reviewer != current_user.name
       redirect_to root_path, :notice => "What do you think you're doing?"
+    end
+  end
+
+  def check_commissioner
+    unless LeagueMember.where(:user_id => current_user.id, :league_id => @league.id).first.role == "commissioner"
+      redirect_to league_path(@league), :notice => "You are not a commissioner of this league"
     end
   end
 end

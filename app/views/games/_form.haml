@@ -1,4 +1,4 @@
-= form_for @game, :url => league_games_path(@league.name), :method => :post do |f|
+= form_for @game, :url => league_season_game_path(@league.name, @season.season_id) do |f|
   - if @game.errors.any?
     #error_explanation
       %ul
@@ -10,32 +10,32 @@
     .field.column
       = f.label :winner
       .dropdown
-        = f.select :winner, options_for_select(""), :include_blank => "Select player", :required => true
+        = f.select :winner, options_for_select("", :selected => @game.winner), :include_blank => "Select player", :required => true
     .field.column
       = f.label :home_user
       .dropdown
-        = f.select :home_user, options_for_select(@season.player_names,  {:class => "navbar-dropdown-content"}), :include_blank => "Select player", :required => true
+        = f.select :home_user, options_for_select(@season.player_names,  {:class => "navbar-dropdown-content", :selected => @game.home_user}), :include_blank => "Select player", :required => true
     .field.column
       = f.label :away_user
       .dropdown
-        = f.select :away_user, options_for_select(@season.player_names,  {:class => "navbar-dropdown-content"}), :include_blank => "Select player", :required => true
+        = f.select :away_user, options_for_select(@season.player_names,  {:class => "navbar-dropdown-content", :selected => @game.away_user}), :include_blank => "Select player", :required => true
   .row
     .field.column
       = f.label :home_score
       .dropdown
-        = f.number_field :home_score, :value => 0, :min => 0, :max => 14, :required => true
+        = f.number_field :home_score, :placeholder => 0, :min => 0, :max => 14, :required => true
     .field.column
       = f.label :away_score
       .dropdown
-        = f.number_field :away_score, :value => 0, :min => 0, :max => 14, :required => true
+        = f.number_field :away_score, :placeholder => 0, :min => 0, :max => 14, :required => true
     .field.column
       = f.label :home_penalty_score
       .dropdown
-        = f.number_field :home_penalty_score, :value => 0, :min => 0, :max => 14, :required => true
+        = f.number_field :home_penalty_score, :placeholder => 0, :min => 0, :max => 14, :required => true
     .field.column
       = f.label :away_penalty_score
       .dropdown
-        = f.number_field :away_penalty_score, :value => 0, :min => 0, :max => 14, :required => true
+        = f.number_field :away_penalty_score, :placeholder => 0, :min => 0, :max => 14, :required => true
   .row
     .field.column
       = f.submit "Submit Game", :id => "submit", :class => "pull-right right"

@@ -1,21 +1,21 @@
 .container
   %h1
     Review Games
-  .table
-    %table
-      %thead
-        %tr
-          %th id
-          %th League
-          %th Winner
-          %th Home
-          %th Away
-          %th.t-num Score
-          %th.t-num Penalties
-          %th Approve
-          %th Decline
-      %tbody
-        - unless @games.nil?
+  - if @games.count != 0
+    .table
+      %table
+        %thead
+          %tr
+            %th id
+            %th League
+            %th Winner
+            %th Home
+            %th Away
+            %th.t-num Score
+            %th.t-num Penalties
+            %th Approve
+            %th Decline
+        %tbody
           - @games.each do |game|
             %tr
               %td
@@ -39,3 +39,5 @@
                 = link_to "Approve", approve_path(:game_id => game.game_id), :method => :post
               %td
                 = link_to "Decline", decline_path(:game_id => game.game_id), :method => :post
+  - else
+    %h2.center You have no games to review!

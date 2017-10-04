@@ -22,6 +22,9 @@ class Games
     @away_score.on       "change", @populateWinner
     @h_penalty_score.on  "change", @populateWinner
     @a_penalty_score.on  "change", @populateWinner
+
+    @populateWinner()
+
     @form.submit ->
       @validateInput
 

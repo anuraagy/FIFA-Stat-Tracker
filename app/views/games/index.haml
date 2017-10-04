@@ -12,6 +12,8 @@
             %th.t-num Score
             %th.t-num Penalties
             %th View
+            - if LeagueMember.where(:user_id => current_user.id, :league_id => @league.id).first.role == "commissioner"
+              %th Edit
         %tbody
           - @games.each do |game|
             %tr
@@ -32,6 +34,9 @@
                   0 - 0
               %td
                 = link_to "View", league_season_game_path(curr_league.name, game.season.season_id, game.game_id)
+              - if LeagueMember.where(:user_id => current_user.id, :league_id => @league.id).first.role == "commissioner"
+                %td
+                  = link_to "Edit", edit_league_season_game_path(curr_league.name, game.season.season_id, game.game_id)
   - else
     %h2.center No games have been played yet!
 
