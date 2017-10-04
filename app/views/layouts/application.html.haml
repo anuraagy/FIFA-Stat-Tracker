@@ -44,16 +44,22 @@
         - if current_user
           .navbar-item-right
             .navbar-item.submitgame
-              = link_to "+ Submit New Game", new_game_path, :class => ""
+              = link_to "+ Submit New Game", new_league_game_path(curr_league), :class => ""
           .navbar-item
             = link_to "#{curr_league.name}", league_path(curr_league.name)
           .navbar-item
             - if curr_league.commissioner == current_user
               = link_to "Edit", edit_league_path(curr_league.name)
           .navbar-item
-            = link_to "Games", games_path
+            = link_to "Games", league_games_path(curr_league)
           .navbar-item
-            = link_to "Table", table_path
+            = link_to "Table", table_league_game_path
+          .navbar-item
+            .navbar-dropdown
+              = link_to "Previous Seasons", league_seasons_path(curr_league)
+              .navbar-dropdown-content
+                - curr_league.seasons.each do |season|
+                  = link_to "#{league.display_name}", league_season_path(curr_league,season)
           .navbar-item
             - if current_user.review_needed.count > 0
               = link_to "Review (#{current_user.review_needed.count})", review_path, :class => ""

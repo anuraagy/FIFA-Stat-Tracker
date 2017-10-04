@@ -2,13 +2,18 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { :registrations => "registrations" }
   root "games#default"
 
-  resources :games, :except => [:edit, :update]
-
   resources :leagues, :param => :name do 
-    get  :join, :on => :member
+    get  :join,       :on => :member
     post :add_player, :on => :member
-  	resources :seasons, :param => :season_id do
 
+    resources :games, :param => :game_id do 
+      get :table, :on => :collection
+    end
+
+  	resources :seasons, :param => :season_id do
+      resources :games, :param => :game_id do 
+
+      end
   	end
   end
 

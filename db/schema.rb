@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171001183509) do
+ActiveRecord::Schema.define(version: 20171002210638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,9 @@ ActiveRecord::Schema.define(version: 20171001183509) do
     t.string "reviewer"
     t.string "submitter"
     t.boolean "approved", default: false
+    t.string "game_id"
+    t.bigint "season_id"
+    t.index ["season_id"], name: "index_games_on_season_id"
   end
 
   create_table "league_members", force: :cascade do |t|
