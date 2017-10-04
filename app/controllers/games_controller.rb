@@ -4,6 +4,7 @@ class GamesController < ApplicationController
   before_action :find_season, :except => [:default, :review, :approve, :decline]
   before_action :check_approver, :only => [:approve, :decline]
   before_action :check_commissioner, :only => [:edit, :update]
+  before_action :check_active, :except => [:default, :index, :table, :show]
 
   def default
 
@@ -35,13 +36,31 @@ class GamesController < ApplicationController
 
   def index
     @games = []
+    isCommish = LeagueMember.where(:user_id => current_user.id, :league_id => @league.id).first.role == "commissioner"
 
     if params[:season_id]
       @season = Season.find_by!(:season_id => params[:season_id])
-      @games = @season.games.where(:approved => true).order('id ASC')
+      
+      if isCommish == false
+        @games = @season.games.where(:approved => true).order('id ASC')
+      else 
+        @games = @season.games.order('id ASC')
+      end
+    elsif params[:season_season_id]
+      @season = Season.find_by!(:season_id => params[:season_season_id])
+      
+      if isCommish == false
+        @games = @season.games.where(:approved => true).order('id ASC')
+      else 
+        @games = @season.games.order('id ASC')
+      end
     else
       @league = League.find_by!(:name => params[:league_name])
-      @games = @league.seasons.last.games.where(:approved => true).order('id ASC') unless @league.seasons.count == 0
+      if isCommish == false
+        @games = @league.current_season.games.where(:approved => true).order('id ASC') unless @league.current_season.nil?
+      else 
+        @games = @league.current_season.games.order('id ASC') unless @league.current_season.nil?
+      end
     end
   end
 
@@ -50,7 +69,7 @@ class GamesController < ApplicationController
       @season = Season.find_by!(:season_id => params[:season_id])
     else
       @league = League.find_by!(:name => params[:name])
-      @season = @league.seasons.last
+      @season = @league.current_season
     end
     @users = User.all
   end
@@ -124,8 +143,14 @@ class GamesController < ApplicationController
   def find_season
     if params[:season_id]
       @season = Season.find_by!(:season_id => params[:season_id])
+    elsif params[:season_season_id]
+      @season = Season.find_by!(:season_id => params[:season_season_id])
     else
-      @season = @league.seasons.last unless @league.seasons.count == 0
+      if @league.current_season != nil
+        @season = @league.current_season
+      else
+        redirect_to league_path(@league), :notice => "The season hasn't started yet!"
+      end
     end
   end
 
@@ -141,5 +166,10 @@ class GamesController < ApplicationController
     unless LeagueMember.where(:user_id => current_user.id, :league_id => @league.id).first.role == "commissioner"
       redirect_to league_path(@league), :notice => "You are not a commissioner of this league"
     end
+  end
+
+  def check_active
+
+    redirect_to league_path(@league), :notice => "This season is over! You must reactivate it to make any changes!" unless @season.status == "Active"
   end
 end

@@ -6,11 +6,15 @@ Rails.application.routes.draw do
     get  :join,       :on => :member
     post :add_player, :on => :member
     get  :table,      :on => :member, :controller => :games
+    get  :manage,     :on => :member
 
     resources :games, :param => :game_id do 
     end
 
   	resources :seasons, :param => :season_id do
+      post :change_status, :on => :member
+      get  :index, :on => :member, :controller => :games, :action => :table
+
       resources :games, :param => :game_id do 
 
       end

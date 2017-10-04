@@ -1,0 +1,40 @@
+.container
+  %h1 Manage League
+  %h3 Seasons
+  .table
+    %table#table
+      %thead
+        %tr
+          %th Index
+          %th Start
+          %th End 
+          %th Status
+          %th Edit
+          %th Delete
+          %th Start/Stop
+      - @league.seasons.except(@season).each_with_index do |season, index|
+        %tr
+          %td
+            = "Season #{index + 1}" 
+          %td
+            = season.start.strftime("%m/%d/%Y at %I:%M%p")
+          %td
+            = season.end.strftime("%m/%d/%Y at %I:%M%p")
+          %td
+            = season.status
+          %td
+            = link_to "Edit", edit_league_season_path(@league, season)
+          %td 
+            = link_to "Delete", league_season_path(@league, season), :method => :delete, :data => {:confirm => 'Are you sure you want to delete this season?'}
+
+          %td 
+            - if season.status == "Active"
+              = link_to "Deactivate", change_status_league_season_path(@league, season), :method => :post
+            - else
+              = link_to "Activate", change_status_league_season_path(@league, season), :method => :post
+
+  %h3 Create a new season
+  = render 'seasons/form'
+  .seasons
+    %h3 Edit League
+    = render 'form'

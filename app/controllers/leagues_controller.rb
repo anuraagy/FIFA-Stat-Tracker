@@ -13,6 +13,11 @@ class LeaguesController < ApplicationController
     @leagues = current_user.leagues
   end
 
+  def manage
+    @league = League.find_by!(:name => params[:name])
+    @season = @league.seasons.new
+  end
+
   def join
     @league = League.find_by!(:name => params[:name])    
   end

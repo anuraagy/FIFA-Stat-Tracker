@@ -14,6 +14,7 @@
             %th View
             - if LeagueMember.where(:user_id => current_user.id, :league_id => @league.id).first.role == "commissioner"
               %th Edit
+              %th Approved
         %tbody
           - @games.each do |game|
             %tr
@@ -37,6 +38,8 @@
               - if LeagueMember.where(:user_id => current_user.id, :league_id => @league.id).first.role == "commissioner"
                 %td
                   = link_to "Edit", edit_league_season_game_path(curr_league.name, game.season.season_id, game.game_id)
+                %td
+                  = game.approved.to_s.capitalize
   - else
     %h2.center No games have been played yet!
 
