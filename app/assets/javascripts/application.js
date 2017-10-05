@@ -15,7 +15,6 @@
 //= require jquery-tablesorter
 //= require jquery.turbolinks
 //= require tingle
-//= require jquery.datetimepicker
 //= require highcharts
 //= require chartkick
 //= require select2

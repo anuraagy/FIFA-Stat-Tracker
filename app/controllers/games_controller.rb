@@ -4,7 +4,7 @@ class GamesController < ApplicationController
   before_action :find_season, :except => [:default, :review, :approve, :decline]
   before_action :check_approver, :only => [:approve, :decline]
   before_action :check_commissioner, :only => [:edit, :update]
-  before_action :check_active, :except => [:default, :index, :table, :show]
+  before_action :check_active, :except => [:default, :index, :table, :show, :review]
 
   def default
 

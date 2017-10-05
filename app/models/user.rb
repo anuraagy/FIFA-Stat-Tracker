@@ -7,6 +7,11 @@ class User < ApplicationRecord
   has_many :league_members
   has_many :leagues, :through => :league_members
 
+
+  def is_part_of?(league)
+    leagues.include?(league)
+  end
+
   def stats(season)
 
     stats = { :games_won   => games_won(season).count,
