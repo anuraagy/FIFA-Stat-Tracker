@@ -7,11 +7,9 @@ class GamesController < ApplicationController
   before_action :check_active, :except => [:default, :index, :table, :show, :review]
 
   def default
-
   end
 
   def visualizations
-
   end
 
   def review

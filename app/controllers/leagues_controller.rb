@@ -44,7 +44,8 @@ class LeaguesController < ApplicationController
 
   def create
     @league = League.new(league_params)
-
+    @league.name = SecureRandom.urlsafe_base64(8)
+    
     if @league.save && @league.add_commissioner(current_user)
       redirect_to league_path(@league)
     else
@@ -75,7 +76,6 @@ class LeaguesController < ApplicationController
   private
 
   def league_params
-    params[:league][:name] = SecureRandom.urlsafe_base64(8) unless params[:league][:name]
     params.require(:league).permit(:name, :display_name, :password, :sport)
   end
 

@@ -34,10 +34,10 @@
                 - else
                   0 - 0
               %td
-                = link_to "View", league_season_game_path(curr_league.name, game.season.season_id, game.game_id)
+                = link_to "View", league_season_game_path(@league, game.season.season_id, game.game_id)
               - if LeagueMember.where(:user_id => current_user.id, :league_id => @league.id).first.role == "commissioner"
                 %td
-                  = link_to "Edit", edit_league_season_game_path(curr_league.name, game.season.season_id, game.game_id)
+                  = link_to "Edit", edit_league_season_game_path(@league, game.season.season_id, game.game_id)
                 %td
                   = game.approved.to_s.capitalize
   - else

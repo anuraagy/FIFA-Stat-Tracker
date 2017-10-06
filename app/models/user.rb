@@ -18,7 +18,7 @@ class User < ApplicationRecord
               :games_lost  => games_lost(season).count,
               :games       => games(season).count,
               :points      => games_won(season).count * 3 + games_tied(season).count * 1,
-              :ties        => games_tied(season).count}
+              :ties        => games_tied(season).count }
 
     goals_for = 0
     goals_against = 0
@@ -59,14 +59,5 @@ class User < ApplicationRecord
 
   def review_needed
     Game.where({:reviewed => false, :reviewer => self.name})
-  end
-
-  def self.name_list
-    array = []
-    User.all.each do |user|
-      array.push(user.name)
-    end
-
-    array
   end
 end
