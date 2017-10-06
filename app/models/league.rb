@@ -29,6 +29,22 @@
     league_member.save
 	end
 
+  def leader
+    max_points = 0
+    max_player = nil 
+
+    players.each do |player|
+      points = player.stats(current_season)[:points] 
+     
+      if points > max_points
+        max_points = points
+        max_player = player
+      end
+    end
+
+    max_player
+  end
+
 	def add_player(user)
 		if has_player(user)
       return "You are already part of this league"

@@ -1,2 +1,54 @@
 .container
-	= @league.display_name
+  .row
+    %h2.column
+      = @league.display_name
+    %h3{:style => "float:right;"}
+      = "Days remaining: #{(@league.current_season.end - DateTime.now).to_i/(24 * 60 * 60)}"
+  - if @league.current_season
+    %br
+    %h3
+      = "Leader leader: #{@league.leader.name}"
+    %br
+    %h4 Recent Games
+    .table.column.column-80
+      %table
+        %thead
+          %tr
+            %th id
+            %th Winner
+            %th Home
+            %th Away
+            %th.t-num Score
+            %th.t-num Penalties
+            %th View
+            - if LeagueMember.where(:user_id => current_user.id, :league_id => @league.id).first.role == "commissioner"
+              %th Edit
+              %th Approved
+        %tbody
+          - @league.current_season.games.order('id desc').limit(3).each do |game|
+            %tr
+              %td
+                = game.id
+              %td
+                = game.winner
+              %td
+                = game.home_user
+              %td
+                = game.away_user
+              %td.t-num
+                = "#{game.home_score} - #{game.away_score}"
+              %td.t-num
+                - if game.home_penalty_score? && game.away_penalty_score?
+                  = "#{game.home_penalty_score} - #{game.away_penalty_score}"
+                - else
+                  0 - 0
+              %td
+                = link_to "View", league_season_game_path(@league, game.season.season_id, game.game_id)
+              - if LeagueMember.where(:user_id => current_user.id, :league_id => @league.id).first.role == "commissioner"
+                %td
+                  = link_to "Edit", edit_league_season_game_path(@league, game.season.season_id, game.game_id)
+                %td
+                  = game.approved.to_s.capitalize
+    .leader.column.column-30
+  - else
+    %h2.center No games have been played yet!
