@@ -2,74 +2,17 @@ class GamesController < ApplicationController
   before_action :authenticate_user!, :except => [:default]
   before_action :find_league, :except => [:default, :review, :approve, :decline]
   before_action :find_season, :except => [:default, :review, :approve, :decline]
-  before_action :check_approver, :only => [:approve, :decline]
   before_action :check_commissioner, :only => [:edit, :update]
-  before_action :check_active, :except => [:default, :index, :table, :show, :review]
-
-  def default
-  end
-
-  def visualizations
-  end
-
-  def review
-    @games = current_user.review_needed
-  end
-
-  def approve
-    @game = Game.find_by(:game_id => params[:game_id])
-    @game.reviewed = true
-    @game.approved = true
-    @game.save
-    redirect_to review_path, :notice => "The game has been approved"
-  end
-
-  def decline
-    @game = Game.find_by(:game_id => params[:game_id])
-    @game.reviewed = true
-    @game.approved = false
-    @game.save
-    redirect_to review_path, :notice => "The game has been declined"
-  end
+  before_action :check_active, :except => [:default, :index, :table, :show, :review, :approve, :decline]
 
   def index
-    @games = []
-    isCommish = LeagueMember.where(:user_id => current_user.id, :league_id => @league.id).first.role == "commissioner"
-
-    if params[:season_id]
-      @season = Season.find_by!(:season_id => params[:season_id])
-      
-      if isCommish == false
-        @games = @season.games.where(:approved => true).order('id ASC')
-      else 
-        @games = @season.games.order('id ASC')
-      end
-    elsif params[:season_season_id]
-      @season = Season.find_by!(:season_id => params[:season_season_id])
-      
-      if isCommish == false
-        @games = @season.games.where(:approved => true).order('id ASC')
-      else 
-        @games = @season.games.order('id ASC')
-      end
+    if @season.nil?
+      @games = @league.current_season.games.order('id ASC')
     else
-      @league = League.find_by!(:name => params[:league_name])
-      if isCommish == false
-        @games = @league.current_season.games.where(:approved => true).order('id ASC') unless @league.current_season.nil?
-      else 
-        @games = @league.current_season.games.order('id ASC') unless @league.current_season.nil?
-      end
+      @games = @season.games.order('id ASC')
     end
-  end
-
-  def table
-    if params[:season_id]
-      @season = Season.find_by!(:season_id => params[:season_id])
-    else
-      @league = League.find_by!(:name => params[:name])
-      @season = @league.current_season
-    end
-    @users = User.all
+    
+    @games = @games.where(:approved => true) unless current_user == @league.commissioner
   end
 
   def show
@@ -80,6 +23,18 @@ class GamesController < ApplicationController
     @game = Game.new
   end
 
+  def create
+    @game = Game.new(game_params)
+    @game.game_id = SecureRandom.urlsafe_base64(8)    
+    @game.set_reviewer(current_user)
+   
+    if @game.save
+      redirect_to league_season_game_path(@league, @game.season, @game)
+    else
+      render :new
+    end
+  end
+
   def edit
     @game = Game.find_by(:game_id => params[:game_id])
   end
@@ -88,54 +43,56 @@ class GamesController < ApplicationController
     @game = Game.find_by(:game_id => params[:game_id])
 
     if @game.update(game_params)
-      redirect_to league_season_game_path(@league.name, @game.season_id, @game.game_id), :notice => "Game updated"
+      redirect_to league_season_game_path(@league, @game.season, @game), :notice => "Game updated"
     else
       render :edit
     end
   end
+  
+  def review
+    @games = current_user.review_needed
+  end
 
-  def create
-    @game = Game.new(game_params)
-    @game.submitter = current_user.name
+  def approve
+    @game = Game.find_by(:game_id => params[:game_id])
 
-    if current_user.name == @game.home_user
-      @game.reviewer = @game.away_user
-    elsif current_user.name == @game.away_user
-      @game.reviewer = @game.home_user
-    end
-
-    if current_user.name != @game.home_user && current_user.name != @game.away_user
-      @game.errors.add(:base, "You can't submit games for others! Please make sure that one of the players is you.")
-      render :new
+    if Game.approve(@game, current_user)
+      redirect_to review_path, :notice => "The game has been approved"
     else
-      if @game.save
-        redirect_to league_season_game_path(@league.name, @game.season_id, @game.game_id)
-      else
-        render :new
-      end
+      redirect_to review_path, :notice => "What do you think you're doing?"
+    end
+  end
+
+  def decline
+    @game = Game.find_by(:game_id => params[:game_id])
+    
+    if Game.decline(@game, current_user)
+      redirect_to review_path, :notice => "The game has been declined"
+    else
+      redirect_to review_path, :notice => "What do you think you're doing?"
     end
   end
 
 
   def destroy
+    @game = Game.find_by(:game_id => params[:game_id])
     @game.destroy
+
     redirect_to games_path
+  end
+
+
+  def table
+    @players = @league.players
+  end
+
+  def default
   end
 
   private
 
   def game_params
-    params[:game][:game_id] = SecureRandom.urlsafe_base64(8) if params[:game][:game_id] == ""
     params[:game].permit(:home_user, :away_user, :home_score, :away_score, :winner, :home_penalty_score, :away_penalty_score, :game_id, :season_id)
-  end
-
-
-  def find_league
-    if params[:name]
-      @league = League.find_by(:name => params[:name])
-    elsif params[:league_name]
-      @league = League.find_by(:name => params[:league_name])
-    end
   end
 
   def find_season
@@ -152,22 +109,9 @@ class GamesController < ApplicationController
     end
   end
 
-  def check_approver
-    @game = Game.find_by(:game_id => params[:game_id])
-
-    if @game.reviewer != current_user.name
-      redirect_to root_path, :notice => "What do you think you're doing?"
-    end
-  end
-
-  def check_commissioner
-    unless LeagueMember.where(:user_id => current_user.id, :league_id => @league.id).first.role == "commissioner"
-      redirect_to league_path(@league), :notice => "You are not a commissioner of this league"
-    end
-  end
-
   def check_active
-
-    redirect_to league_path(@league), :notice => "This season is over! You must reactivate it to make any changes!" unless @season.status == "Active"
+    unless @season.status == "Active"
+      redirect_to league_path(@league), :notice => "This season is over! You must reactivate it to make any changes!"  
+    end
   end
 end

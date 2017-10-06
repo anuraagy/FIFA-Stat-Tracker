@@ -3,9 +3,15 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def check_commissioner
-    @league = League.find_by!(:name => params[:name])
-    
+  def find_league
+    if params[:name]
+      @league = League.find_by(:name => params[:name])
+    elsif params[:league_name]
+      @league = League.find_by(:name => params[:league_name])
+    end
+  end
+
+  def check_commissioner    
     unless @league.has_commissioner?(current_user)
       redirect_to league_path(@league), :notice => "You are not a commissioner of this league" 
     end

@@ -12,10 +12,6 @@ class SeasonsController < ApplicationController
     @season = @league.seasons.find_by!(:season_id => params[:season_id])
   end
 
-  def manage
-
-  end
-
   def change_status
     @season = Season.find_by!(:season_id => params[:season_id])
     @league = @season.league
@@ -48,7 +44,8 @@ class SeasonsController < ApplicationController
 
   def create
     @season = @league.seasons.new(season_params)
-
+    @season.season_id = SecureRandom.urlsafe_base64(8)
+    
     if @season.save
       redirect_to manage_league_path(@league), :notice => "You have successfully created the season"
     else
@@ -80,21 +77,6 @@ class SeasonsController < ApplicationController
   private
 
   def season_params
-    params[:season][:season_id] = SecureRandom.urlsafe_base64(8) if params[:season][:season_id].nil?
     params.require(:season).permit(:start, :end, :status, :season_id, :league_id)
-  end
-
-  def find_league
-    if params[:name]
-      @league = League.find_by(:name => params[:name])
-    elsif params[:league_name]
-      @league = League.find_by(:name => params[:league_name])
-    end
-  end
-
-  def check_commissioner
-    unless LeagueMember.where(:user_id => current_user.id, :league_id => @league.id).first.role == "commissioner"
-      redirect_to league_path(@league), :notice => "You are not a commissioner of this league"
-    end
   end
 end

@@ -19,11 +19,11 @@
             %th.t-num{:title => "Goals against per game"} GA/G
             %th.t-num{:title => "Goal differential"} GD
         %tbody
-          - @users.each do |user|
-            - stats = user.stats(@season)
+          - @players.each do |player|
+            - stats = player.stats(@season)
             %tr
               %td
-                = user.name
+                = player.name
               %td.t-num
                 = stats[:games] != 0 ? ((stats[:games_won] + 0.0)/(stats[:games])).to_s[0..3] : 0.0
               %td.t-num
