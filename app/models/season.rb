@@ -10,6 +10,18 @@ class Season < ApplicationRecord
 		season_id
 	end
 
+  def change_status
+    if self.status == "Active"
+      self.status = "Inactive"
+    elsif self.status == "Inactive" && league.current_season.nil?
+      self.status = "Active"
+    else
+      return false
+    end
+
+    self.save
+  end
+
 	def player_names
     players = []
     league.players.each do |player|
