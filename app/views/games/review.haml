@@ -2,42 +2,6 @@
   %h1
     Review Games
   - if @games.count != 0
-    .table
-      %table
-        %thead
-          %tr
-            %th id
-            %th League
-            %th Winner
-            %th Home
-            %th Away
-            %th.t-num Score
-            %th.t-num Penalties
-            %th Approve
-            %th Decline
-        %tbody
-          - @games.each do |game|
-            %tr
-              %td
-                = game.id
-              %td
-                = game.season.league.display_name
-              %td
-                = game.winner
-              %td
-                = game.home_user
-              %td
-                = game.away_user
-              %td.t-num
-                = "#{game.home_score} - #{game.away_score}"
-              %td.t-num
-                - if game.home_penalty_score? && game.away_penalty_score?
-                  = "#{game.home_penalty_score} - #{game.away_penalty_score}"
-                - else
-                  0 - 0
-              %td
-                = link_to "Approve", approve_path(:game_id => game.game_id), :method => :post
-              %td
-                = link_to "Decline", decline_path(:game_id => game.game_id), :method => :post
+    = render "gtable"
   - else
     %h2.center You have no games to review!

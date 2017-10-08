@@ -1,0 +1,20 @@
+- if @season.errors.any?
+  #error_explanation
+  %ul
+    - @season.errors.full_messages.each do |msg|
+      %li= msg
+- if @season.season_id?
+  = f.hidden_field :season_id, :value => @season.season_id
+- if @season.status?
+  = f.hidden_field :status, :value => @season.status
+- else
+  = f.hidden_field :status, :value => "Not started"
+
+.field
+  = f.label :start
+  = f.datetime_field :start, :required => true
+.field
+  = f.label :end
+  = f.datetime_field :end, :required => true
+.field
+  = f.submit "Submit Season", :id => "submit"
