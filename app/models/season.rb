@@ -10,6 +10,10 @@ class Season < ApplicationRecord
 		season_id
 	end
 
+  def has_games
+    games.count > 0
+  end
+
   def change_status
     if self.status == "Active"
       self.status = "Inactive"

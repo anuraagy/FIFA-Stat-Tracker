@@ -8,7 +8,7 @@
 - if @season.status?
   = f.hidden_field :status, :value => @season.status
 - else
-  = f.hidden_field :status, :value => "Not started"
+  = f.hidden_field :status, :value => "Inactive"
 
 .field
   = f.label :start
