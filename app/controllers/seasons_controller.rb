@@ -22,7 +22,7 @@ class SeasonsController < ApplicationController
     if @season.save
       redirect_to manage_league_path(@league), :notice => "You have successfully created the season"
     else
-      render :new
+      redirect_to manage_league_path(@league), :notice => @season.errors.messages.values.to_s.gsub!("[","").gsub("]", "").gsub(",", " and").gsub("\"", "")
     end
   end
 
