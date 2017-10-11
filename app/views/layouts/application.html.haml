@@ -14,17 +14,21 @@
       - if current_user
         .navbar-item-right
           .navbar-dropdown
-            = link_to "#{current_user.name}", "#", :class => "active"
+            = link_to "#{current_user.name}", "#", :class => "uname"
             .navbar-dropdown-content
               = link_to "Edit Account", edit_user_registration_path
               = link_to "Log out", destroy_user_session_path, :method => :delete
-        .navbar-item-right
-          .navbar-item.submitgame
-            = link_to "+ Submit New Game", new_game_path, :class => ""
         .navbar-item
-          = link_to "Games", games_path
+          .navbar-dropdown
+            = link_to "My Leagues", myleagues_path
+            .navbar-dropdown-content
+              - current_user.leagues.each do |league|
+                = link_to "#{league.display_name}", league_path(league.name)
+
         .navbar-item
-          = link_to "Table", table_path
+          = link_to "Join League", leagues_path
+        .navbar-item
+          = link_to "Create League", new_league_path
         .navbar-item
           - if current_user.review_needed.count > 0
             = link_to "Review (#{current_user.review_needed.count})", review_path, :class => "emphasize"
@@ -37,6 +41,36 @@
         .navbar-item-right
           .navbar-item
             = link_to "Log in", new_user_session_path, :class => "active"
+
+    - if current_user && curr_league && current_user.leagues.include?(curr_league)
+      .navbar{:style => "margin-top: -20px; background-color: #4CAF50"}
+        - if current_user
+          .navbar-item-right
+            .navbar-item.submitgame
+              = link_to "+ Submit New Game", new_league_game_path(curr_league), :class => ""
+          .navbar-item
+            = link_to "#{curr_league.display_name}", league_path(curr_league.name)
+          .navbar-item
+            - if curr_league.commissioner == current_user
+              = link_to "Manage League", manage_league_path(curr_league)
+          .navbar-item
+            = link_to "Games", league_games_path(curr_league)
+          .navbar-item
+            = link_to "Table", table_league_path(curr_league.name)
+          .navbar-item
+            .navbar-dropdown
+              = link_to "Previous Seasons", "javascript:void(0)"
+              .navbar-dropdown-content
+                - curr_league.seasons.each_with_index do |season, index|
+                  - if season != curr_league.current_season
+                    = link_to "Season #{index+1}", league_season_path(curr_league.name, season.season_id)
+        - else
+          .navbar-item-right
+            .navbar-item
+              = link_to "Sign up", new_user_registration_path, :class => "active"
+          .navbar-item-right
+            .navbar-item
+              = link_to "Log in", new_user_session_path, :class => "active"
     - if notice
       %p.notice= notice
     - if alert

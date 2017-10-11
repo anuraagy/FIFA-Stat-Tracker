@@ -9,7 +9,6 @@
         %th Away
         %th.t-num Score
         %th.t-num Penalties
-        %th View
     %tbody
       %tr
         %td
@@ -25,5 +24,4 @@
             = "#{game.home_penalty_score} - #{game.away_penalty_score}"
           - else
             0 - 0
-        %td
-          = link_to "View", @game
+

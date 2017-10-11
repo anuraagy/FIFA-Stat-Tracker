@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170929184442) do
+ActiveRecord::Schema.define(version: 20171002210638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,39 @@ ActiveRecord::Schema.define(version: 20170929184442) do
     t.string "reviewer"
     t.string "submitter"
     t.boolean "approved", default: false
+    t.string "game_id"
+    t.bigint "season_id"
+    t.index ["season_id"], name: "index_games_on_season_id"
+  end
+
+  create_table "league_members", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "league_id"
+    t.string "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["league_id"], name: "index_league_members_on_league_id"
+    t.index ["user_id"], name: "index_league_members_on_user_id"
+  end
+
+  create_table "leagues", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "display_name", null: false
+    t.string "password", null: false
+    t.string "sport", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "seasons", force: :cascade do |t|
+    t.datetime "start", null: false
+    t.datetime "end", null: false
+    t.string "status", null: false
+    t.bigint "league_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "season_id"
+    t.index ["league_id"], name: "index_seasons_on_league_id"
   end
 
   create_table "users", id: :serial, force: :cascade do |t|

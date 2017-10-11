@@ -4,16 +4,25 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  def stats
-    stats = { :games_won   => games_won.count,
-              :games_lost  => games_lost.count,
-              :games       => games.count,
-              :points      => games_won.count * 3 + games_tied.count * 1,
-              :ties        => games_tied.count}
+  has_many :league_members
+  has_many :leagues, :through => :league_members
+
+
+  def is_part_of?(league)
+    leagues.include?(league)
+  end
+
+  def stats(season)
+
+    stats = { :games_won   => games_won(season).count,
+              :games_lost  => games_lost(season).count,
+              :games       => games(season).count,
+              :points      => games_won(season).count * 3 + games_tied(season).count * 1,
+              :ties        => games_tied(season).count }
 
     goals_for = 0
     goals_against = 0
-    games.each do |game|
+    games(season).each do |game|
       if game.home_user == self.name
         goals_for += game.home_score
         goals_against += game.away_score
@@ -28,32 +37,27 @@ class User < ApplicationRecord
     stats
   end
 
-  def games
-    Game.where(:home_user => self.name, :approved => true) + Game.where(:away_user => self.name, :approved => true)
+  def leagues_owned 
+    leagues.where("league_members.role = ?", "commissioner")
   end
 
-  def games_won
-    Game.where(:winner => self.name, :approved => true)
+  def games(season)
+    season.games.where(:home_user => self.name, :approved => true) + season.games.where(:away_user => self.name, :approved => true)
   end
 
-  def games_tied
-    Game.where(:home_user => self.name, :approved => true, :winner => "Tie") + Game.where(:away_user => self.name, :approved => true, :winner => "Tie")
+  def games_won(season)
+     season.games.where(:winner => self.name, :approved => true)
   end
 
-  def games_lost
-    games - games_tied - games_won
+  def games_tied(season)
+    season.games.where(:home_user => self.name, :approved => true, :winner => "Tie") +  season.games.where(:away_user => self.name, :approved => true, :winner => "Tie")
+  end
+
+  def games_lost(season)
+     games(season) - games_tied(season) - games_won(season)
   end
 
   def review_needed
     Game.where({:reviewed => false, :reviewer => self.name})
-  end
-
-  def self.name_list
-    array = []
-    User.all.each do |user|
-      array.push(user.name)
-    end
-
-    array
   end
 end

@@ -1,0 +1,26 @@
+.container
+  %h1
+    Leagues
+  .table
+    %table#table
+      %thead
+        %tr
+          %th Name
+          %th{:title => "Win percentage"} # of Members
+          %th Commissioner
+          %th{:title => "Wins"} Sport
+          %th{:title => "Losses"} Join
+      %tbody
+        - @leagues.each do |league|
+          %tr
+            %td
+              = league.display_name
+            %td
+              = league.players.count
+            %td
+              = league.commissioner ? league.commissioner.name : "N/A"
+            %td
+              = league.sport
+            %td
+              = current_user.leagues.include?(league) ? (link_to "Go", league_path(league.name)) : (link_to "Join", join_league_path(league.name))
+

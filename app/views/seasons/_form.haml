@@ -1,0 +1,6 @@
+- if @season.id?
+  = form_for @season, :url => league_season_path(@league, @season) do |f|
+    = render "seasons/fields", :f => f
+- else 
+  = form_for @season, :url => league_seasons_path(@league) do |f|
+    = render "seasons/fields", :f => f
