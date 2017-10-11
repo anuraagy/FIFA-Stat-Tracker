@@ -37,6 +37,11 @@
   border: none;
  }
  
+ .facebook {
+  background-color: #3b5998 ;
+  border-color: #3b5998 ;
+ }
+
  .uname {
   background-color: #111;
  }
