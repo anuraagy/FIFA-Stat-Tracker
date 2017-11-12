@@ -9,7 +9,7 @@
         %th.t-num Score
         %th.t-num Penalties
         %th View
-        - if current_user == @league.commissioner
+        - if current_user == @league && params[:action] != "review"
           %th Edit
           %th Approved
     %tbody
@@ -30,15 +30,16 @@
               = "#{game.home_penalty_score} - #{game.away_penalty_score}"
             - else
               0 - 0
-          %td
-            = link_to "View", league_season_game_path(@league, game.season.season_id, game.game_id)
-          - if current_user == @league.commissioner
+          - if params[:action] != "review"
             %td
-              = link_to "Edit", edit_league_season_game_path(@league, game.season.season_id, game.game_id)
-            %td
-              = game.approved.to_s.capitalize
-          - if params[:action] == "review"
-            %td
-              = link_to "Approve", approve_path(:game_id => game.game_id), :method => :post
-            %td
-              = link_to "Decline", decline_path(:game_id => game.game_id), :method => :post
+              = link_to "View", league_season_game_path(@league, game.season.season_id, game.game_id)
+            - if current_user == @league.commissioner && 
+              %td
+                = link_to "Edit", edit_league_season_game_path(@league, game.season.season_id, game.game_id)
+              %td
+                = game.approved.to_s.capitalize
+            - if params[:action] == "review"
+              %td
+                = link_to "Approve", approve_path(:game_id => game.game_id), :method => :post
+              %td
+                = link_to "Decline", decline_path(:game_id => game.game_id), :method => :post
