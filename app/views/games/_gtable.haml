@@ -2,7 +2,7 @@
   %table
     %thead
       %tr
-        %th id
+        /%th id
         %th Winner
         %th Home
         %th Away
@@ -19,8 +19,8 @@
     %tbody
       - @games.each do |game|
         %tr
-          %td
-            = game.id
+          /%td
+          /  = game.id
           %td
             = game.winner
           %td
