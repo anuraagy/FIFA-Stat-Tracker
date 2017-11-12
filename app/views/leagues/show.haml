@@ -15,7 +15,6 @@
       %table
         %thead
           %tr
-            %th id
             %th Winner
             %th Home
             %th Away
@@ -26,10 +25,8 @@
               %th Edit
               %th Approved
         %tbody
-          - @league.current_season.games.order('id desc').limit(3).each do |game|
+          - @league.current_season.games.where(:approved => true).order('id desc').limit(3).each do |game|
             %tr
-              %td
-                = game.id
               %td
                 = game.winner
               %td
