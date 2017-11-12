@@ -13,7 +13,7 @@
           %th Decline
         - else
           %th View
-          - if current_user == @league
+          - if current_user == @league.commissioner
             %th Edit
             %th Approved
     %tbody
