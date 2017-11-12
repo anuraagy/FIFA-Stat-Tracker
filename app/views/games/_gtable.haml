@@ -33,7 +33,7 @@
           - if params[:action] != "review"
             %td
               = link_to "View", league_season_game_path(@league, game.season.season_id, game.game_id)
-            - if current_user == @league.commissioner && 
+            - if current_user == @league.commissioner
               %td
                 = link_to "Edit", edit_league_season_game_path(@league, game.season.season_id, game.game_id)
               %td
