@@ -8,10 +8,14 @@
         %th Away
         %th.t-num Score
         %th.t-num Penalties
-        %th View
-        - if current_user == @league && params[:action] != "review"
-          %th Edit
-          %th Approved
+        - if param[:action] == "review"
+          %th Approve
+          %th Decline
+        - else
+          %th View
+          - if current_user == @league
+            %th Edit
+            %th Approved
     %tbody
       - @games.each do |game|
         %tr
