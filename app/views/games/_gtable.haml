@@ -38,8 +38,8 @@
                 = link_to "Edit", edit_league_season_game_path(@league, game.season.season_id, game.game_id)
               %td
                 = game.approved.to_s.capitalize
-            - if params[:action] == "review"
-              %td
-                = link_to "Approve", approve_path(:game_id => game.game_id), :method => :post
-              %td
-                = link_to "Decline", decline_path(:game_id => game.game_id), :method => :post
+          - if params[:action] == "review"
+            %td
+              = link_to "Approve", approve_path(:game_id => game.game_id), :method => :post
+            %td
+              = link_to "Decline", decline_path(:game_id => game.game_id), :method => :post
