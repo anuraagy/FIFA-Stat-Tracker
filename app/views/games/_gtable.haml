@@ -2,21 +2,25 @@
   %table
     %thead
       %tr
-        %th id
+        /%th id
         %th Winner
         %th Home
         %th Away
         %th.t-num Score
         %th.t-num Penalties
-        %th View
-        - if current_user == @league.commissioner
-          %th Edit
-          %th Approved
+        - if params[:action] == "review"
+          %th Approve
+          %th Decline
+        - else
+          %th View
+          - if current_user == @league.commissioner
+            %th Edit
+            %th Approved
     %tbody
       - @games.each do |game|
         %tr
-          %td
-            = game.id
+          /%td
+          /  = game.id
           %td
             = game.winner
           %td
@@ -30,13 +34,14 @@
               = "#{game.home_penalty_score} - #{game.away_penalty_score}"
             - else
               0 - 0
-          %td
-            = link_to "View", league_season_game_path(@league, game.season.season_id, game.game_id)
-          - if current_user == @league.commissioner
+          - if params[:action] != "review"
             %td
-              = link_to "Edit", edit_league_season_game_path(@league, game.season.season_id, game.game_id)
-            %td
-              = game.approved.to_s.capitalize
+              = link_to "View", league_season_game_path(@league, game.season.season_id, game.game_id)
+            - if current_user == @league.commissioner
+              %td
+                = link_to "Edit", edit_league_season_game_path(@league, game.season.season_id, game.game_id)
+              %td
+                = game.approved.to_s.capitalize
           - if params[:action] == "review"
             %td
               = link_to "Approve", approve_path(:game_id => game.game_id), :method => :post
