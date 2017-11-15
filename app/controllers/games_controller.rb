@@ -78,7 +78,7 @@ class GamesController < ApplicationController
     @game = Game.find_by(:game_id => params[:game_id])
     @game.destroy
 
-    redirect_to games_path
+    redirect_to league_season_games_path(@league, @season)
   end
 
 
