@@ -21,7 +21,7 @@
           = "#{@game.home_score} - #{@game.away_score}"
         %td.t-num
           - if @game.home_penalty_score? && @game.away_penalty_score?
-            = "#{game.home_penalty_score} - #{game.away_penalty_score}"
+            = "#{@game.home_penalty_score} - #{@game.away_penalty_score}"
           - else
             0 - 0
 
