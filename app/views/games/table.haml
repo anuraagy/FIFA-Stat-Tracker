@@ -3,7 +3,7 @@
     Points Table
   - if @season
     .table
-      %table#table
+      %table#standings
         %thead
           %tr
             %th Name
@@ -25,7 +25,7 @@
               %td
                 = player.name
               %td.t-num
-                = stats[:games] != 0 ? ((stats[:games_won] + 0.0)/(stats[:games])).to_s[0..3] : 0.0
+                = wp(player)
               %td.t-num
                 = stats[:games_won]
               %td.t-num
@@ -35,15 +35,15 @@
               %td.t-num
                 = stats[:points]
               %td.t-num
-                = stats[:games] != 0 ? ((stats[:points] + 0.0) / (stats[:games])).to_s[0..3] : 0.0 
+                = ppg(player)
               %td.t-num
                 = stats[:goals_for]
               %td.t-num
                 = stats[:goals_against]
               %td.t-num
-                = stats[:games] != 0 ? ((stats[:goals_for] + 0.0) / (stats[:games])).to_s[0..3] : 0.0 
+                = gfpg(player)
               %td.t-num
-                = stats[:games] != 0 ? ((stats[:goals_against] + 0.0) / (stats[:games])).to_s[0..3] : 0.0 
+                = gapg(player)
               %td.t-num
                 = stats[:goals_for] - stats[:goals_against]
   - else
