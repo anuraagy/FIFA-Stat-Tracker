@@ -1,6 +1,9 @@
 .container
-  %h1
-    Leagues
+  .row
+    .column.column-25
+      %h1 Leagues
+    .column.column-25.column-offset-50
+      = text_field_tag :search, "", :placeholder => "Seach games", :id => "search"
   .table
     %table#table
       %thead

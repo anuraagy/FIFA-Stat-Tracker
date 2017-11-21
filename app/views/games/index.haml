@@ -1,6 +1,15 @@
 .container
-  %h1 Games
+  .row
+    .column.column-25
+      %h1 Games
+    .column.column-25.column-offset-50
+      = text_field_tag :search, "", :placeholder => "Seach games", :id => "search"
+
   - if @games.count != 0
+    .row
+      .column.column-33
+        / = label_tag :search
+    / %input#search{:placeholder => "Search for names..", :type => "text"}
     = render "gtable"
   - else
     %h2.center No games have been played yet!
